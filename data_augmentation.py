@@ -22,19 +22,33 @@ def compress(path_in,path_out,rate):
         image.save(path_out, quality=rate)
 
 def augmentation():
-    
-    img = cv2.imread('F:\Cam1.png')
-        
-    cv2.imshow('src',img)
-    
-    
-    img1 = gamma_trans(img, 0.5)
-    img2 = gamma_trans(img, 1.5)
+#   
 
+    image = cv2.cvtColor(cv2.imread('F:\Cam2.jpg',-1), cv2.COLOR_BGR2RGB) 
+    image1 = cv2.cvtColor(cv2.imread('F:\Cam3.jpg',-1), cv2.COLOR_BGR2RGB) 
+#    img = cv2.imread('F:\Cam2.jpg')
+#    img1=cv2.imread('F:\Cam3.jpg')
+    size1=image.shape
+    print(size1)
+    size2=image1.shape
+    print(size2)
+    cv2.imwrite('F:\cam4.jpg',cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
+##    print(img[2000][4000][1])
+#    cv2.imshow('src',img)
+#    cv2.waitKey(0)
+#    img = Img.open('F:\Cam2.jpg')
+#    print (img.size)
+#    print (img.size[0])
+#    img.show
+ 
     
-    cv2.imshow('gamma=0.5',img1)
-    cv2.imshow('gamma=1.5',img2)
-    cv2.waitKey(0)
+#    img1 = gamma_trans(img, 0.5)
+#    img2 = gamma_trans(img, 1.5)
+#
+#    
+#    cv2.imshow('gamma=0.5',img1)
+#    cv2.imshow('gamma=1.5',img2)
+#    cv2.waitKey(0)
     
 
 augmentation()

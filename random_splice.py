@@ -79,18 +79,7 @@ def splice(main_image,splice_image,mask1, init_px, init_py, main_px, main_py):
    
     mask = cv2.split(mask1)[0]
     mask_rows,mask_cols = mask.shape
-#    print(mask_rows,mask_cols)
-    
-       
-#    splice_rows,splice_cols,channels = splice_image.shape
-#    main_rows,main_cols,channels = main_image.shape
-#    
-#    init_px=random.randint(0,splice_rows-mask_rows-10)
-#    init_py=random.randint(0,splice_cols-mask_cols-10)
-#    main_px=random.randint(0,main_rows-mask_rows-10)
-#    main_py=random.randint(0,main_cols-mask_cols-10)
-#    print(init_px,(init_px + mask_rows),init_py,(init_py + mask_cols),main_px,(main_px + mask_rows),main_py,(main_py + mask_cols))
-    
+   
     splice_roi = splice_image[init_px:(init_px + mask_rows) , init_py:(init_py + mask_cols)]
     main_roi=main_image[main_px:(main_px + mask_rows) , main_py:(main_py + mask_cols)]
     
@@ -100,7 +89,6 @@ def splice(main_image,splice_image,mask1, init_px, init_py, main_px, main_py):
     print(main_roi.shape)
     print(mask.shape)
 #    cv2.imshow('splice',splice_roi)
-#   
 #    cv2.imshow('main',main_roi)
 #    cv2.imshow('mask',mask)
 #    cv2.imshow('mask_inv',mask_inv)
@@ -137,21 +125,21 @@ if __name__ == '__main__':
         image_name=get_all_fileName(image_dir)
         
         for t in range(0,274):
-            main_image=cv2.imread(image_path[t])
+            main_image=cv2.cvtColor(cv2.imread(image_path[t],-1), cv2.COLOR_BGR2RGB)
 #        main_mask=cv2.imread(picmask_path+image_name[t])
         
             for ref_cam in dir_file:
                 if(operator.eq(cam_id,ref_cam)==False):
-                    main_image=cv2.imread(image_path[t])
-                    main_mask=cv2.imread(picmask_path+image_name[t])
+                    main_image=cv2.cvtColor(cv2.imread(image_path[t],-1), cv2.COLOR_BGR2RGB)
+                    main_mask=cv2.cvtColor(cv2.imread(picmask_path+image_name[t],-1), cv2.COLOR_BGR2RGB)
                     print(picmask_path+image_name[t])
                     refimage_dir=dir_path+'/'+ref_cam  
                     refimage_path=get_all_filePath(refimage_dir)
                     refimage_name=get_all_fileName(refimage_dir)
                     rt=random.randint(0,274)
                     """splice image的读入"""
-                    splice_image=cv2.imread(refimage_path[rt])
-                    splice_mask=cv2.imread(picmask_path+refimage_name[rt])
+                    splice_image=cv2.cvtColor(cv2.imread(refimage_path[rt],-1), cv2.COLOR_BGR2RGB)
+                    splice_mask=cv2.cvtColor(cv2.imread(picmask_path+refimage_name[rt],-1), cv2.COLOR_BGR2RGB)
             
                     """mask的读入"""
                     mt=random.randint(0,3372)
@@ -199,8 +187,9 @@ if __name__ == '__main__':
                     img_str=os.path.splitext(image_name[t])[0]+refimage_name[rt]
                     mask_str=os.path.splitext(image_name[t])[0]+refimage_name[rt]
                     
-                    cv2.imwrite(out_img_path+img_str,result_img)
-                    cv2.imwrite(out_mask_path+mask_str,result_mask)
+                    cv2.imwrite(out_img_path+img_str,cv2.cvtColor(result_img, cv2.COLOR_RGB2BGR))
+                    cv2.imwrite(out_mask_path+mask_str,cv2.cvtColor(result_mask, cv2.COLOR_RGB2BGR))
+                    
                     
                 
                 

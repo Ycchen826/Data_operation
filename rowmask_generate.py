@@ -11,6 +11,7 @@ import os
 import operator
 import cv2
 import shutil
+from PIL import Image
 
 def get_label_info(csv_path):
     """
@@ -59,10 +60,10 @@ def create_img(height,width,r,g,b):
     img = np.zeros([height,width,3],dtype=np.uint8)
     #创建高600像素，宽800像素，每个像素有BGR三通道的数组（图像）
     #由于元素都在0~255之内，规定数组元素类型为uint8已足够
-    img[:,:,0] = np.ones([height,width])*b
-    img[:,:,1] = np.ones([height,width])*g
-    img[:,:,2] = np.ones([height,width])*r
-
+    img[:,:,0] = np.ones([height,width])*int(b)
+    img[:,:,1] = np.ones([height,width])*int(g)
+    img[:,:,2] = np.ones([height,width])*int(r)
+    
 #    cv2.imshow("created_img",img)
 #    cv2.waitKey(0)
     return img
@@ -110,8 +111,12 @@ if __name__ == '__main__':
         for image in image_path:
             name_count=name_count+1
 #            print(name_count)
-            img=cv2.imread(image)
-            size=img.shape
+#            img=cv2.imread(image)
+#            size=img.shape
+            
+            img = Image.open(image)
+            print (img.size)
+            print (img.size[0])
             
             class_count=-1
             for num in class_names:
@@ -120,10 +125,10 @@ if __name__ == '__main__':
                     r=label_values[class_count][0]
                     g=label_values[class_count][1]
                     b=label_values[class_count][2]
-                    mask=create_img(size[0],size[1],r,g,b)
-                    
-                             
-                    shutil.copyfile(image,aim_path+image_name[name_count])
-                    cv2.imwrite(aim_mask_path+image_name[name_count],mask)
+                    mask=create_img(img.size[1],img.size[0],int(r),int(g),int(b))
+           
+                    filename = os.path.splitext(image_name[name_count])[0]
+#                    shutil.copyfile(image,aim_path+image_name[name_count])
+                    cv2.imwrite(aim_mask_path+filename+'.png',mask)
             
         
